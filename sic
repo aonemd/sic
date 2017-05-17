@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+SIC_STORE=${SIC_FILE:=~/.sic}
+GPG_RECIPIENT="${SIC_KEYID:=}"
+GPG="$(command -v gpg2 || command -v gpg)"
+
+fail () {
+  echo "Error: ${1}";
+  exit 1
+}
+
+encrypt () {
+  ${GPG} \
+    --encrypt \
+    --recipient="$GPG_RECIPIENT" \
+    --local-user="$GPG_RECIPIENT" \
+    --armor --batch --no-tty --yes \
+    --passphrase-fd 3 \
+    --output "$SIC_STORE" "${2}" 3< <(echo "${1}")
+}
+
+decrypt () {
+  echo "${1}" | ${GPG} \
+    --decrypt \
+    --armor --batch --no-tty --quiet \
+    --passphrase-fd 0 \
+    "${SIC_STORE}" 2>/dev/null
+}
+
+if [[ $# == 0 ]]; then
+    # help command
+    exit 2
+else
+  case "$1" in
+    list|ls)
+      # list command
+      ;;
+    get)
+      # get command
+      ;;
+    add|a)
+      # add command
+      ;;
+    edit|e)
+      # update command
+      ;;
+    remove|rm)
+      # remove command
+      ;;
+    help|h)
+      # help command
+      ;;
+    *)
+      # help command
+      exit 2
+  esac
+fi
