@@ -9,6 +9,18 @@ fail () {
   exit 1
 }
 
+get_passphrase () {
+  read -p "Enter GPG Passphrase: " -s passphrase
+}
+
+decrypt () {
+  echo "${1}" | ${GPG} \
+    --decrypt \
+    --armor --batch --no-tty --quiet \
+    --passphrase-fd 0 \
+    "${SIC_STORE}" 2>/dev/null
+}
+
 encrypt () {
   ${GPG} \
     --encrypt \
@@ -19,12 +31,15 @@ encrypt () {
     --output "$SIC_STORE" "${2}" 3< <(echo "${1}")
 }
 
-decrypt () {
-  echo "${1}" | ${GPG} \
-    --decrypt \
-    --armor --batch --no-tty --quiet \
-    --passphrase-fd 0 \
-    "${SIC_STORE}" 2>/dev/null
+add () {
+  get_passphrase
+  password_entries=$(decrypt "${passphrase}")
+
+  key="${1}"
+  value="${2}"
+  password_entries="${password_entries}${key}:${value}\n"
+
+  echo "$password_entries" | encrypt $passphrase -
 }
 
 if [[ $# == 0 ]]; then
@@ -40,6 +55,7 @@ else
       ;;
     add|a)
       # add command
+      add "$2" "$3"
       ;;
     edit|e)
       # update command
