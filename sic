@@ -37,7 +37,11 @@ add () {
 
   key="${1}"
   value="${2}"
-  password_entries="${password_entries}${key}:${value}\n"
+
+  if grep -q $key <(echo $password_entries); then
+    fail "Key already exists"
+  fi
+  password_entries="${password_entries}${key}: ${value}\n"
 
   echo "$password_entries" | encrypt $passphrase -
 }
