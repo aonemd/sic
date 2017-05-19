@@ -41,6 +41,7 @@ list () {
 
   printf "%-50s\t%-50s\n" 'KEY' 'VALUE'
   while read -r line; do
+    [ -z "$line" ] && continue
     key_val=(${line//:[[:space:]]/ })
     printf "%-50s\t%-50s\n" ${key_val[0]} ${key_val[1]}
   done <<< "$password_entries"
@@ -56,7 +57,7 @@ add () {
     fail "Key already exists"
   fi
   NEWLINE=$'\n'
-  password_entries="${password_entries}${key}: ${value}${NEWLINE}"
+  password_entries="${password_entries}${NEWLINE}${key}: ${value}"
 
   echo "$password_entries" | encrypt $passphrase -
 }
