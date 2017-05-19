@@ -107,9 +107,26 @@ remove () {
   write_password_entries
 }
 
+_help () {
+cat << EOF
+NAME:
+  sic - GPG Based Password Manager
+
+USAGE:
+  $(basename "$0") command [arguments...]
+
+COMMANDS
+   list, ls                                 List all entries in the password store
+   get, g        <key>                      Get the value of a password entry
+   add, a        <key> <value>              Add a password entry to the password store
+   edit, e       <key> <value>              Edit an existing entry
+   remove, rm    <key>                      Remove an existing entry
+   help, h                                  Show this message
+EOF
+}
+
 if [[ $# == 0 ]]; then
-    # help command
-    exit 2
+    _help
 else
   case "$1" in
     list|ls)
@@ -133,10 +150,9 @@ else
       remove "$2"
       ;;
     help|h)
-      # help command
+      _help
       ;;
     *)
-      # help command
-      exit 2
+      _help
   esac
 fi
