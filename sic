@@ -36,6 +36,10 @@ read_password_entries () {
   password_entries=$(decrypt "${passphrase}")
 }
 
+write_password_entries () {
+  echo "$password_entries" | encrypt $passphrase -
+}
+
 list () {
   read_password_entries
 
@@ -59,7 +63,20 @@ add () {
   NEWLINE=$'\n'
   password_entries="${password_entries}${NEWLINE}${key}: ${value}"
 
-  echo "$password_entries" | encrypt $passphrase -
+  write_password_entries
+}
+
+remove () {
+  read_password_entries
+
+  key="${1}"
+
+  if ! grep -q $key <(echo $password_entries); then
+    fail "Key does not exist"
+  fi
+  password_entries=$(echo "$password_entries" | grep -v "$key")
+
+  write_password_entries
 }
 
 if [[ $# == 0 ]]; then
@@ -83,6 +100,7 @@ else
       ;;
     remove|rm)
       # remove command
+      remove "$2"
       ;;
     help|h)
       # help command
