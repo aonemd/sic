@@ -31,9 +31,23 @@ encrypt () {
     --output "$SIC_STORE" "${2}" 3< <(echo "${1}")
 }
 
-add () {
+read_password_entries () {
   get_passphrase
   password_entries=$(decrypt "${passphrase}")
+}
+
+list () {
+  read_password_entries
+
+  printf "%-50s\t%-50s\n" 'KEY' 'VALUE'
+  while read -r line; do
+    key_val=(${line//:[[:space:]]/ })
+    printf "%-50s\t%-50s\n" ${key_val[0]} ${key_val[1]}
+  done <<< "$password_entries"
+}
+
+add () {
+  read_password_entries
 
   key="${1}"
   value="${2}"
@@ -41,7 +55,8 @@ add () {
   if grep -q $key <(echo $password_entries); then
     fail "Key already exists"
   fi
-  password_entries="${password_entries}${key}: ${value}\n"
+  NEWLINE=$'\n'
+  password_entries="${password_entries}${key}: ${value}${NEWLINE}"
 
   echo "$password_entries" | encrypt $passphrase -
 }
@@ -53,6 +68,7 @@ else
   case "$1" in
     list|ls)
       # list command
+      list
       ;;
     get)
       # get command
