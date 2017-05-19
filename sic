@@ -51,6 +51,19 @@ list () {
   done <<< "$password_entries"
 }
 
+get () {
+  read_password_entries
+
+  local key="${1}"
+  local entry=$(grep "$key: " <(echo "$password_entries"))
+  if ! [[ $entry ]]; then
+    fail "Key does not exist"
+  fi
+
+  local key_val=(${entry//:[[:space:]]/ })
+  echo ${key_val[1]}
+}
+
 add () {
   read_password_entries
 
@@ -103,8 +116,9 @@ else
       # list command
       list
       ;;
-    get)
+    get|g)
       # get command
+      get "$2"
       ;;
     add|a)
       # add command
