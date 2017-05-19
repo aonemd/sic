@@ -10,7 +10,7 @@ fail () {
 }
 
 get_passphrase () {
-  read -p "Enter GPG Passphrase: " -s passphrase
+  read -p "Enter GPG Passphrase: " -s passphrase; echo -e '\n'
 }
 
 decrypt () {
