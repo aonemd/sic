@@ -55,7 +55,7 @@ get () {
   read_password_entries
 
   local key="${1}"
-  local entry=$(grep "$key: " <(echo "$password_entries"))
+  local entry=$(grep "$key:[[:space:]]" <(echo "$password_entries"))
   if ! [[ $entry ]]; then
     fail "Key does not exist"
   fi
@@ -70,7 +70,7 @@ add () {
   local key="${1}"
   local value="${2}"
 
-  if grep -q $key <(echo $password_entries); then
+  if grep -q "$key:[[:space:]]" <(echo $password_entries); then
     fail "Key already exists"
   fi
   NEWLINE=$'\n'
@@ -86,7 +86,7 @@ edit () {
   local value="${2}"
   local key_val="$key: $value"
 
-  if ! grep -q $key <(echo $password_entries); then
+  if ! grep -q "$key:[[:space:]]" <(echo $password_entries); then
     fail "Key does not exist"
   fi
   password_entries=$(echo "$password_entries" | sed -e "s/$key: \S*/$key_val/")
@@ -99,10 +99,10 @@ remove () {
 
   local key="${1}"
 
-  if ! grep -q $key <(echo $password_entries); then
+  if ! grep -q "$key:[[:space:]]" <(echo $password_entries); then
     fail "Key does not exist"
   fi
-  password_entries=$(echo "$password_entries" | grep -v "$key")
+  password_entries=$(echo "$password_entries" | grep -v "$key:[[:space:]]")
 
   write_password_entries
 }
