@@ -40,7 +40,7 @@ write_password_entries () {
   echo "$password_entries" | encrypt $passphrase -
 }
 
-list () {
+_list () {
   read_password_entries
 
   printf "%-50s\t%-50s\n" 'KEY' 'VALUE'
@@ -51,7 +51,7 @@ list () {
   done <<< "$password_entries"
 }
 
-get () {
+_get () {
   read_password_entries
 
   local key="${1}"
@@ -64,7 +64,7 @@ get () {
   echo ${key_val[1]}
 }
 
-add () {
+_add () {
   read_password_entries
 
   local key="${1}"
@@ -79,7 +79,7 @@ add () {
   write_password_entries
 }
 
-edit () {
+_edit () {
   read_password_entries
 
   local key="${1}"
@@ -94,7 +94,7 @@ edit () {
   write_password_entries
 }
 
-remove () {
+_remove () {
   read_password_entries
 
   local key="${1}"
@@ -131,23 +131,23 @@ else
   case "$1" in
     list|ls)
       # list command
-      list
+      _list
       ;;
     get|g)
       # get command
-      get "$2"
+      _get "$2"
       ;;
     add|a)
       # add command
-      add "$2" "$3"
+      _add "$2" "$3"
       ;;
     edit|e)
       # update command
-      edit "$2" "$3"
+      _edit "$2" "$3"
       ;;
     remove|rm)
       # remove command
-      remove "$2"
+      _remove "$2"
       ;;
     help|h)
       _help
