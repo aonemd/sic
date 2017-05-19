@@ -26,6 +26,7 @@ encrypt () {
     --encrypt \
     --recipient="$GPG_RECIPIENT" \
     --local-user="$GPG_RECIPIENT" \
+    --sign \
     --armor --batch --no-tty --yes \
     --passphrase-fd 3 \
     --output "$SIC_STORE" "${2}" 3< <(echo "${1}")
