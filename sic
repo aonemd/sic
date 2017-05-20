@@ -137,6 +137,8 @@ OPTIONS
   -k      GPG keyid used for encryption & decryption [\$SIC_KEYID]. Defaults to gpg "--default-recipient-self" option
   -c      GPG used command. Defaults to "gpg2" then "gpg" if it was not found
 EOF
+
+exit 1
 }
 
 while getopts ':f:k:c:' opt; do
@@ -149,27 +151,37 @@ done
 shift "$((OPTIND-1))"
 
 if [[ $# == 0 ]]; then
-    _help
+  _help
 else
   case "$1" in
     list|ls)
-      # list command
+      if [[ "$#" -ne 1 ]]; then
+        _help
+      fi
       _list
       ;;
     get|g)
-      # get command
+      if [[ "$#" -ne 2 ]]; then
+        _help
+      fi
       _get "$2"
       ;;
     add|a)
-      # add command
+      if [[ "$#" -ne 3 ]]; then
+        _help
+      fi
       _add "$2" "$3"
       ;;
     edit|e)
-      # update command
+      if [[ "$#" -ne 3 ]]; then
+        _help
+      fi
       _edit "$2" "$3"
       ;;
     remove|rm)
-      # remove command
+      if [[ "$#" -ne 2 ]]; then
+        _help
+      fi
       _remove "$2"
       ;;
     help|h)
