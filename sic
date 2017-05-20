@@ -125,12 +125,12 @@ USAGE:
   $(basename "$0") [options...] command [arguments...]
 
 COMMANDS
-   list, ls                           List all entries in the password store
-   get, g          <key>              Get the value of a password entry
-   add, a          <key> <value>      Add a password entry to the password store
-   edit, e         <key> <value>      Edit an existing entry
-   remove, rm      <key>              Remove an existing entry
-   help, h                            Show this message
+  list, ls                           List all entries in the password store
+  get, g          <key>              Get the value of a password entry
+  add, a          <key> <value>      Add a password entry to the password store
+  edit, e         <key> <value>      Edit an existing entry
+  remove, rm      <key>              Remove an existing entry
+  help, h                            Show this message
 
 OPTIONS
   -f      File to store passwords [\$SIC_FILE]. Defaults to "~/.sic"
