@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-SIC_STORE=${SIC_FILE:=~/.sic}
-GPG_RECIPIENT="${SIC_KEYID:=}"
-GPG="$(command -v gpg2 || command -v gpg)"
+sic_store=${SIC_FILE:=~/.sic}
+gpg_recipient="${SIC_KEYID:=}"
+gpg_command="$(command -v gpg2 || command -v gpg)"
 
 fail () {
   echo "Error: ${1}";
@@ -14,22 +14,22 @@ get_passphrase () {
 }
 
 decrypt () {
-  echo "${1}" | ${GPG} \
+  echo "${1}" | ${gpg_command} \
     --decrypt \
     --armor --batch --no-tty --quiet \
     --passphrase-fd 0 \
-    "${SIC_STORE}" 2>/dev/null
+    "${sic_store}" 2>/dev/null
 }
 
 encrypt () {
-  ${GPG} \
+  ${gpg_command} \
     --encrypt \
-    --recipient="$GPG_RECIPIENT" \
-    --local-user="$GPG_RECIPIENT" \
+    --recipient="$gpg_recipient" \
+    --local-user="$gpg_recipient" \
     --sign \
     --armor --batch --no-tty --yes \
     --passphrase-fd 3 \
-    --output "$SIC_STORE" "${2}" 3< <(echo "${1}")
+    --output "$sic_store" "${2}" 3< <(echo "${1}")
 }
 
 read_password_entries () {
@@ -133,9 +133,9 @@ EOF
 
 while getopts ':f:k:c:' opt; do
   case $opt in
-    f) SIC_STORE="$OPTARG"     ;;
-    k) GPG_RECIPIENT="$OPTARG" ;;
-    c) GPG="$OPTARG"           ;;
+    f) sic_store="$OPTARG"     ;;
+    k) gpg_recipient="$OPTARG" ;;
+    c) gpg_command="$OPTARG"   ;;
   esac
 done
 shift "$((OPTIND-1))"
