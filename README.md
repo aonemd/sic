@@ -38,8 +38,9 @@ OPTIONS
 ```
 
 ### Similar Software
-sic is highly inspired by these password managers:
+**sic** is highly inspired by these password managers:
 - [pony](https://github.com/jessfraz/pony)
 - [PASSBOX](https://github.com/RobBollons/passbox)
 - [pwd.sh](https://github.com/drduh/pwd.sh)
+
 All credeit goes to their authors.
