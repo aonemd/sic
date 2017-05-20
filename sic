@@ -4,51 +4,6 @@ sic_store=${SIC_FILE:=~/.sic}
 gpg_recipient="${SIC_KEYID:=}"
 gpg_command="$(command -v gpg2 || command -v gpg)"
 
-fail () {
-  echo "Error: ${1}";
-  exit 1
-}
-
-read_password_entries () {
-  get_passphrase
-  password_entries=$(decrypt "${passphrase}" | sort)
-}
-
-write_password_entries () {
-  echo "$password_entries" | encrypt $passphrase -
-}
-
-get_passphrase () {
-  read -p "Enter GPG Passphrase for $gpg_recipient: " -s passphrase; echo -e '\n'
-}
-
-decrypt () {
-  echo "${1}" | ${gpg_command} \
-    --decrypt \
-    --armor --batch --no-tty --quiet \
-    --passphrase-fd 0 \
-    "${sic_store}" 2>/dev/null
-}
-
-encrypt () {
-  recipient_option="--recipient=$gpg_recipient"
-  local_user_option="--local-user=$gpg_recipient"
-
-  if [[ "$gpg_recipient" == "" ]]; then
-    recipient_option="--default-recipient-self"
-    local_user_option=""
-  fi
-
-  ${gpg_command} \
-    --encrypt \
-    $recipient_option \
-    $local_user_option \
-    --sign \
-    --armor --batch --no-tty --yes \
-    --passphrase-fd 3 \
-    --output "$sic_store" "${2}" 3< <(echo "${1}")
-}
-
 _list () {
   read_password_entries
 
@@ -138,6 +93,51 @@ OPTIONS
   -c      GPG used command. Defaults to "gpg2" then "gpg" if it was not found
 EOF
 
+  exit 1
+}
+
+read_password_entries () {
+  get_passphrase
+  password_entries=$(decrypt "${passphrase}" | sort)
+}
+
+write_password_entries () {
+  echo "$password_entries" | encrypt $passphrase -
+}
+
+get_passphrase () {
+  read -p "Enter GPG Passphrase for $gpg_recipient: " -s passphrase; echo -e '\n'
+}
+
+decrypt () {
+  echo "${1}" | ${gpg_command} \
+    --decrypt \
+    --armor --batch --no-tty --quiet \
+    --passphrase-fd 0 \
+    "${sic_store}" 2>/dev/null
+}
+
+encrypt () {
+  recipient_option="--recipient=$gpg_recipient"
+  local_user_option="--local-user=$gpg_recipient"
+
+  if [[ "$gpg_recipient" == "" ]]; then
+    recipient_option="--default-recipient-self"
+    local_user_option=""
+  fi
+
+  ${gpg_command} \
+    --encrypt \
+    $recipient_option \
+    $local_user_option \
+    --sign \
+    --armor --batch --no-tty --yes \
+    --passphrase-fd 3 \
+    --output "$sic_store" "${2}" 3< <(echo "${1}")
+}
+
+fail () {
+  echo "Error: ${1}";
   exit 1
 }
 
