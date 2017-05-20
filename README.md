@@ -34,7 +34,7 @@ COMMANDS
 OPTIONS
   -f      File to store passwords or set $SIC_FILE. Defaults to "~/.sic"
   -k      GPG keyid used for encryption & decryption or set $SIC_KEYID. Defaults to GPG's option "--default-recipient-self"
-  -c      GPG used command. Defaults to "gpg2" then "gpg" if it was not found
+  -c      GPG used command or set $SIC_GPG. Defaults to "gpg2" then "gpg" if it was not found
 ```
 
 ### Similar Software

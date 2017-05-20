@@ -2,7 +2,7 @@
 
 sic_store=${SIC_FILE:=~/.sic}
 gpg_recipient="${SIC_KEYID:=}"
-gpg_command="$(command -v gpg2 || command -v gpg)"
+gpg_command=${SIC_GPG:="$(command -v gpg2 || command -v gpg)"}
 
 _list () {
   read_password_entries
@@ -90,7 +90,7 @@ COMMANDS
 OPTIONS
   -f      File to store passwords or set \$SIC_FILE. Defaults to "~/.sic"
   -k      GPG keyid used for encryption & decryption or set \$SIC_KEYID. Defaults to GPG's option "--default-recipient-self"
-  -c      GPG used command. Defaults to "gpg2" then "gpg" if it was not found
+  -c      GPG used command or set \$SIC_GPG. Defaults to "gpg2" then "gpg" if it was not found
 EOF
 
   exit 1
