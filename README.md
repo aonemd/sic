@@ -1,6 +1,6 @@
 # sic
 
-A Command Line Based Password Manager Backed By GPG's Asymmetric Encryption
+A Command Line Password Manager Backed By GPG's Asymmetric Encryption
 
 ### Installation
 ```console
@@ -18,7 +18,7 @@ It's also recommended to add sic to your `HISTIGNORE` (or `HISTORY_IGNORE` for Z
 ```console
 $ sic h
 NAME:
-  sic - A Command Line Based Password Manager Backed By GPG's Asymmetric Encryption
+  sic - A Command Line Password Manager Backed By GPG's Asymmetric Encryption
 
 USAGE:
   sic [options...] command [arguments...]
