@@ -98,6 +98,8 @@ EOF
 
 read_password_entries () {
   get_passphrase
+  [[ -s $sic_store ]] && check_passphrase
+
   password_entries=$(decrypt "${passphrase}" | sort)
 }
 
@@ -107,6 +109,10 @@ write_password_entries () {
 
 get_passphrase () {
   read -p "Enter GPG Passphrase for $gpg_recipient: " -s passphrase; echo -e '\n'
+}
+
+check_passphrase () {
+  decrypt "${passphrase}" >/dev/null || fail "Incorrect Passphrase"
 }
 
 decrypt () {
