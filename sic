@@ -150,7 +150,7 @@ encrypt () {
     --sign \
     --armor --batch --no-tty --yes \
     --passphrase-fd 3 \
-    --output "$sic_store" "${2}" 3< <(echo "${1}")
+    --output "$sic_store" "${2}" 3< <(echo "${1}") 2>/dev/null
 }
 
 fail () {
