@@ -119,7 +119,8 @@ write_password_entries () {
 }
 
 get_passphrase () {
-  read -p "Enter GPG Passphrase for $gpg_recipient: " -s passphrase; echo -e '\n'
+  passphrase_for=${gpg_recipient:-"default key"}
+  read -p "Enter GPG Passphrase for ($passphrase_for): " -s passphrase; echo -e '\n'
 }
 
 check_passphrase () {
