@@ -22,10 +22,18 @@ decrypt () {
 }
 
 encrypt () {
+  recipient_option="--recipient=$gpg_recipient"
+  local_user_option="--local-user=$gpg_recipient"
+
+  if [[ "$gpg_recipient" == "" ]]; then
+    recipient_option="--default-recipient-self"
+    local_user_option=""
+  fi
+
   ${gpg_command} \
     --encrypt \
-    --recipient="$gpg_recipient" \
-    --local-user="$gpg_recipient" \
+    $recipient_option \
+    $local_user_option \
     --sign \
     --armor --batch --no-tty --yes \
     --passphrase-fd 3 \
@@ -126,7 +134,7 @@ COMMANDS
 
 OPTIONS
   -f      File to store passwords [\$SIC_FILE]. Defaults to "~/.sic"
-  -k      GPG keyid used for encryption & decryption [\$SIC_KEYID]
+  -k      GPG keyid used for encryption & decryption [\$SIC_KEYID]. Defaults to gpg "--default-recipient-self" option
   -c      GPG used command. Defaults to "gpg2" then "gpg" if it was not found
 EOF
 }
