@@ -9,8 +9,17 @@ fail () {
   exit 1
 }
 
+read_password_entries () {
+  get_passphrase
+  password_entries=$(decrypt "${passphrase}")
+}
+
+write_password_entries () {
+  echo "$password_entries" | encrypt $passphrase -
+}
+
 get_passphrase () {
-  read -p "Enter GPG Passphrase: " -s passphrase; echo -e '\n'
+  read -p "Enter GPG Passphrase for $gpg_recipient: " -s passphrase; echo -e '\n'
 }
 
 decrypt () {
@@ -38,15 +47,6 @@ encrypt () {
     --armor --batch --no-tty --yes \
     --passphrase-fd 3 \
     --output "$sic_store" "${2}" 3< <(echo "${1}")
-}
-
-read_password_entries () {
-  get_passphrase
-  password_entries=$(decrypt "${passphrase}")
-}
-
-write_password_entries () {
-  echo "$password_entries" | encrypt $passphrase -
 }
 
 _list () {
