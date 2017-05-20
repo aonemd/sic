@@ -11,7 +11,7 @@ fail () {
 
 read_password_entries () {
   get_passphrase
-  password_entries=$(decrypt "${passphrase}")
+  password_entries=$(decrypt "${passphrase}" | sort)
 }
 
 write_password_entries () {
