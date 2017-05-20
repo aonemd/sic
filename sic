@@ -138,7 +138,7 @@ OPTIONS
   -c      GPG used command. Defaults to "gpg2" then "gpg" if it was not found
 EOF
 
-exit 1
+  exit 1
 }
 
 while getopts ':f:k:c:' opt; do
