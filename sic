@@ -119,7 +119,7 @@ _remove () {
 _help () {
 cat << EOF
 NAME:
-  sic - A Command Line Based Password Manager Backed By GPG's Asymmetric Encryption
+  sic - A Command Line Password Manager Backed By GPG's Asymmetric Encryption
 
 USAGE:
   $(basename "$0") [options...] command [arguments...]
