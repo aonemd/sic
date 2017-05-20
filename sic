@@ -3,6 +3,7 @@
 sic_store=${SIC_FILE:=~/.sic}
 gpg_recipient="${SIC_KEYID:=}"
 gpg_command=${SIC_GPG:="$(command -v gpg2 || command -v gpg)"}
+copy_command=${SIC_COPY:=xclip -sel clip}
 
 _list () {
   read_password_entries
@@ -25,7 +26,12 @@ _get () {
   fi
 
   local key_val=(${entry//:[[:space:]]/ })
-  echo ${key_val[1]}
+
+  if [ -z "$2" ]; then
+    echo ${key_val[1]}
+  else
+    echo ${key_val[1]} | $copy_command
+  fi
 }
 
 _add () {
@@ -77,11 +83,11 @@ NAME:
   sic - A Command Line Password Manager Backed By GPG's Asymmetric Encryption
 
 USAGE:
-  $(basename "$0") [options...] command [arguments...]
+  $(basename "$0") [options...] command [arguments...] [command options]
 
 COMMANDS
   list, ls                           List all entries in the password store
-  get, g          <key>              Get the value of a password entry
+  get, g          <key>              Get the value of a password entry. Pass the optional "-c" argument to copy the password to the clipboard
   add, a          <key> <value>      Add a password entry to the password store
   edit, e         <key> <value>      Edit an existing entry
   remove, rm      <key>              Remove an existing entry
@@ -90,7 +96,8 @@ COMMANDS
 OPTIONS
   -f      File to store passwords or set \$SIC_FILE. Defaults to "~/.sic"
   -k      GPG keyid used for encryption & decryption or set \$SIC_KEYID. Defaults to GPG's option "--default-recipient-self"
-  -c      GPG used command or set \$SIC_GPG. Defaults to "gpg2" then "gpg" if it was not found
+  -e      GPG used command or set \$SIC_GPG. Defaults to "gpg2" then "gpg" if it was not found
+  -y      Copying/yanking command or set \$SIC_COPY. Defaults to "xclip -sel clip"
 EOF
 
   exit 1
@@ -147,11 +154,12 @@ fail () {
   exit 1
 }
 
-while getopts ':f:k:c:' opt; do
+while getopts ':f:k:e:y:' opt; do
   case $opt in
     f) sic_store="$OPTARG"     ;;
     k) gpg_recipient="$OPTARG" ;;
-    c) gpg_command="$OPTARG"   ;;
+    e) gpg_command="$OPTARG"   ;;
+    y) copy_command="$OPTARG"  ;;
   esac
 done
 shift "$((OPTIND-1))"
@@ -167,10 +175,11 @@ else
       _list
       ;;
     get|g)
-      if [[ "$#" -ne 2 ]]; then
+      if [ \( "$#" -eq 3 -a "$3" == '-c' \) -o "$#" -eq 2 ]; then
+        _get "$2" "$3"
+      else
         _help
       fi
-      _get "$2"
       ;;
     add|a)
       if [[ "$#" -ne 3 ]]; then
