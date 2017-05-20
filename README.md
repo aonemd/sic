@@ -14,6 +14,11 @@ It's preferred to add the path to sic to your `PATH` variable
 
 It's also recommended to add sic to your `HISTIGNORE` (or `HISTORY_IGNORE` for ZSH).
 
+If you're using GPG 2.1.0+, you will see that GPG pops up a window asking for
+the passphrase one more time after you've typed it in the command
+line. This issue is reported [here](https://dev.gnupg.org/T1772). For me, I
+added `pinentry-mode loopback` to gpg.conf and it stopped showing up.
+
 ### Usage
 ```console
 $ sic h
