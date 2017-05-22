@@ -43,10 +43,11 @@ OPTIONS
   -y      Copying/yanking command or set $SIC_COPY. Defaults to "xclip -sel clip"
 ```
 
+![sic GIF demo](/demo.gif)
+
 ### Similar Software
 **sic** is highly inspired by:
 - [pony](https://github.com/jessfraz/pony)
 - [PASSBOX](https://github.com/RobBollons/passbox)
-- [pwd.sh](https://github.com/drduh/pwd.sh)
 
 All credeit goes to their authors.
