@@ -45,10 +45,10 @@ _add () {
     fail "Key already exists"
   fi
 
-  NEWLINE=$'\n'
-  password_entries="${password_entries}${NEWLINE}${key}: ${value}"
+  local NEWLINE=$'\n'
+  local password_entries="${password_entries}${NEWLINE}${key}: ${value}"
 
-  write_password_entries
+  write_password_entries "$password_entries"
 }
 
 _edit () {
@@ -62,9 +62,9 @@ _edit () {
     fail "Key does not exist"
   fi
 
-  password_entries=$(echo "$password_entries" | sed -e "s/$key: \S*/$key_val/")
+  local password_entries=$(echo "$password_entries" | sed -e "s/$key: \S*/$key_val/")
 
-  write_password_entries
+  write_password_entries "$password_entries"
 }
 
 _remove () {
@@ -76,9 +76,9 @@ _remove () {
     fail "Key does not exist"
   fi
 
-  password_entries=$(echo "$password_entries" | grep -v "$key:[[:space:]]")
+  local password_entries=$(echo "$password_entries" | grep -v "$key:[[:space:]]")
 
-  write_password_entries
+  write_password_entries "$password_entries"
 }
 
 _help () {
