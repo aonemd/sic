@@ -108,7 +108,7 @@ EOF
 }
 
 read_password_entries () {
-  get_passphrase
+  prompt_for_passphrase
   [[ -s $sic_store ]] && check_passphrase
 
   password_entries=$(decrypt "${passphrase}" | sort)
@@ -118,7 +118,7 @@ write_password_entries () {
   echo "$password_entries" | encrypt $passphrase -
 }
 
-get_passphrase () {
+prompt_for_passphrase () {
   passphrase_for=${gpg_recipient:-"default key"}
   read -p "Enter GPG Passphrase for ($passphrase_for): " -s passphrase; echo -e '\n'
 }
