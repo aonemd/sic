@@ -50,4 +50,4 @@ OPTIONS
 - [pony](https://github.com/jessfraz/pony)
 - [PASSBOX](https://github.com/RobBollons/passbox)
 
-All credeit goes to their authors.
+All credit goes to their authors.
