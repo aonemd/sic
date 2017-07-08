@@ -108,6 +108,7 @@ EOF
 }
 
 read_password_entries () {
+  [[ $(gpg --list-keys) ]] || fail "No GPG keys found"
   prompt_for_passphrase
   [[ -s $sic_store ]] && check_passphrase
 
