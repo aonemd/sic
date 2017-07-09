@@ -100,7 +100,7 @@ COMMANDS
 OPTIONS
   -f      File to store passwords or set \$SIC_FILE. Defaults to "~/.sic"
   -k      GPG keyid used for encryption & decryption or set \$SIC_KEYID. Defaults to GPG's option "--default-recipient-self"
-  -e      GPG used command or set \$SIC_GPG. Defaults to "gpg2" then "gpg" if it was not found
+  -g      GPG used command or set \$SIC_GPG. Defaults to "gpg2" then "gpg" if it was not found
   -y      Copying/yanking command or set \$SIC_COPY. Defaults to "xclip -sel clip"
 EOF
 
@@ -160,11 +160,11 @@ fail () {
   exit 1
 }
 
-while getopts ':f:k:e:y:' opt; do
+while getopts ':f:k:g:y:' opt; do
   case $opt in
     f) sic_store="$OPTARG"     ;;
     k) gpg_recipient="$OPTARG" ;;
-    e) gpg_command="$OPTARG"   ;;
+    g) gpg_command="$OPTARG"   ;;
     y) copy_command="$OPTARG"  ;;
   esac
 done
