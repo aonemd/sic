@@ -12,7 +12,7 @@ _list () {
   while read -r line; do
     [ -z "$line" ] && continue
     local key_val=(${line//:[[:space:]]/ })
-    printf "%-50s\t%-50s\n" ${key_val[0]} ${key_val[1]}
+    printf "%-50s\t%-50s\n" "${key_val[0]}" "${key_val[*]:1}"
   done <<< "$password_entries"
 }
 
@@ -29,9 +29,9 @@ _get () {
   local key_val=(${entry//:[[:space:]]/ })
 
   if [ -z "$2" ]; then
-    echo ${key_val[1]}
+    echo ${key_val[*]:1}
   else
-    echo ${key_val[1]} | $copy_command
+    echo ${key_val[*]:1} | $copy_command
   fi
 }
 
@@ -92,7 +92,7 @@ USAGE:
 COMMANDS
   list, ls                           List all entries in the password store
   get, g          <key>              Get the value of a password entry. Pass the optional "-c" argument to copy the password to the clipboard
-  add, a          <key> <value>      Add a password entry to the password store
+  add, a          <key> <value>      Add a password entry to the password store. To pass in a multi word value with spaces, wrap it in quotes
   edit, e         <key> <value>      Edit an existing entry
   remove, rm      <key>              Remove an existing entry
   help, h                            Show this message

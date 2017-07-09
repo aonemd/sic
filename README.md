@@ -31,7 +31,7 @@ USAGE:
 COMMANDS
   list, ls                           List all entries in the password store
   get, g          <key>              Get the value of a password entry. Pass the optional "-c" argument to copy the password to the clipboard
-  add, a          <key> <value>      Add a password entry to the password store
+  add, a          <key> <value>      Add a password entry to the password store. To pass in a multi word value with spaces, wrap it in quotes
   edit, e         <key> <value>      Edit an existing entry
   remove, rm      <key>              Remove an existing entry
   help, h                            Show this message
