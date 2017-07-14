@@ -82,7 +82,7 @@ _remove () {
 }
 
 _help () {
-cat << EOF
+  cat << EOF
 NAME:
   sic - A Command Line Password Manager Backed By GPG's Asymmetric Encryption
 
