@@ -38,7 +38,7 @@ COMMANDS
 
 OPTIONS
   -f      File to store passwords or set $SIC_FILE. Defaults to "~/.sic"
-  -k      GPG keyid used for encryption & decryption or set $SIC_KEYID. Defaults to GPG's option "--default-recipient-self"
+  -k      GPG keyid used for encryption & decryption or set $SIC_KEYID. Defaults to GPG's option "--default-key"
   -g      GPG used command or set $SIC_GPG. Defaults to "gpg2" then "gpg" if it was not found
   -y      Copying/yanking command or set $SIC_COPY. Defaults to "xclip -sel clip"
 ```
