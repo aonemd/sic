@@ -20,12 +20,12 @@ _get () {
   read_password_entries
 
   local key="${1}"
-  local entry=$(grep "$key:[[:space:]]" <(echo "$password_entries"))
 
-  if ! [[ $entry ]]; then
+  if ! sic_key_exists; then
     fail "Key does not exist"
   fi
 
+  local entry=$(grep "^$key:[[:space:]]" <(echo "$password_entries"))
   local key_val=(${entry//:[[:space:]]/ })
 
   if [ -z "$2" ]; then
@@ -41,7 +41,7 @@ _add () {
   local key="${1}"
   local value="${2}"
 
-  if grep -q "$key:[[:space:]]" <(echo $password_entries); then
+  if sic_key_exists; then
     fail "Key already exists"
   fi
 
@@ -58,11 +58,11 @@ _edit () {
   local value="${2}"
   local key_val="$key: $value"
 
-  if ! grep -q "$key:[[:space:]]" <(echo $password_entries); then
+  if ! sic_key_exists; then
     fail "Key does not exist"
   fi
 
-  local password_entries=$(echo "$password_entries" | sed -e "s/$key: \S*/$key_val/")
+  local password_entries=$(echo "$password_entries" | sed -e "s/^$key: \S*/$key_val/")
 
   write_password_entries "$password_entries"
 }
@@ -72,11 +72,11 @@ _remove () {
 
   local key="${1}"
 
-  if ! grep -q "$key:[[:space:]]" <(echo $password_entries); then
+  if ! sic_key_exists; then
     fail "Key does not exist"
   fi
 
-  local password_entries=$(echo "$password_entries" | grep -v "$key:[[:space:]]")
+  local password_entries=$(echo "$password_entries" | grep -v "^$key:[[:space:]]")
 
   write_password_entries "$password_entries"
 }
@@ -126,6 +126,10 @@ prompt_for_passphrase () {
 
 check_passphrase () {
   decrypt "${passphrase}" >/dev/null || fail "Incorrect Passphrase"
+}
+
+sic_key_exists () {
+  grep -q "^$key:[[:space:]]" <(echo "$password_entries")
 }
 
 decrypt () {
