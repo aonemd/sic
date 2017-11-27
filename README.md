@@ -4,7 +4,7 @@ A Command Line Password Manager Backed By GPG's Asymmetric Encryption
 
 ### Installation
 ```console
-  curl -L https://raw.githubusercontent.com/aaoiki/sic/master/sic > ./sic && chmod +x ./sic
+  curl -L https://raw.githubusercontent.com/yahmds/sic/master/sic > ./sic && chmod +x ./sic
 ```
 
 It's preferred to add the path to sic to your `PATH` variable
